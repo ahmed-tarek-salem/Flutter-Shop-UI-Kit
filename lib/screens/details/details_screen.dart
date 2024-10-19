@@ -56,13 +56,13 @@ class DetailsScreen extends StatelessWidget {
                       Expanded(
                         child: Text(
                           product.title,
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       const SizedBox(width: defaultPadding),
                       Text(
                         "\$" + product.price.toString(),
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ],
                   ),
@@ -74,7 +74,7 @@ class DetailsScreen extends StatelessWidget {
                   ),
                   Text(
                     "Colors",
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const SizedBox(height: defaultPadding / 2),
                   Row(
@@ -101,7 +101,7 @@ class DetailsScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            primary: primaryColor,
+                            backgroundColor: primaryColor,
                             shape: const StadiumBorder()),
                         child: const Text("Add to Cart"),
                       ),

@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(width: defaultPadding / 2),
             Text(
               "15/2 New Texas",
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
         ),
@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
               "Explore",
               style: Theme.of(context)
                   .textTheme
-                  .headline4!
+                  .headlineMedium!
                   .copyWith(fontWeight: FontWeight.w500, color: Colors.black),
             ),
             const Text(
