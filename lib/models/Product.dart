@@ -38,3 +38,10 @@ List<Product> demo_product = [
     bgColor: const Color(0xFFEEEEED),
   ),
 ];
+
+final List<Color> backgroundColors = [
+  const Color(0xFFFEFBF9),
+  const Color(0xFFF8FEFB),
+  const Color(0xFFEFEFF2),
+  const Color(0xFFEEEEED),
+];
