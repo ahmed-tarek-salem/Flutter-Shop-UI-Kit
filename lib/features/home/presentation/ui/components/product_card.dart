@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:stylish/application/data/models/product_model.dart';
+import 'package:stylish/features/product/presentation/ui/product_screen.dart';
 
 import '../../../../../constants.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
-    required this.image,
-    required this.title,
-    required this.price,
-    required this.press,
-  }) : super(key: key);
-  final String image, title;
-  final VoidCallback press;
-  final int price;
+    required this.product,
+  });
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: press,
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductScreen(id: product.id),
+            ));
+      },
       child: Container(
         width: 154,
         padding: const EdgeInsets.all(defaultPadding / 2),
@@ -35,7 +39,7 @@ class ProductCard extends StatelessWidget {
                     Radius.circular(defaultBorderRadius)),
               ),
               child: Image.network(
-                image,
+                product.image,
                 height: 132,
               ),
             ),
@@ -44,14 +48,14 @@ class ProductCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    title,
+                    product.title,
                     maxLines: 2,
                     style: const TextStyle(color: Colors.black),
                   ),
                 ),
                 const SizedBox(width: defaultPadding / 4),
                 Text(
-                  "\$" + price.toString(),
+                  "\$" + product.price.toString(),
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],

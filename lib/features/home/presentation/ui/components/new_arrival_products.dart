@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/features/home/presentation/providers/home_provider.dart';
-import 'package:stylish/models/Product.dart';
-import 'package:stylish/features/product/presentation/ui/product_screen.dart';
 
 import '../../../../../constants.dart';
 import 'product_card.dart';
@@ -36,19 +34,7 @@ class NewArrivalProducts extends StatelessWidget {
                   products.length,
                   (index) => Padding(
                     padding: const EdgeInsets.only(right: defaultPadding),
-                    child: ProductCard(
-                      title: products[index].title,
-                      image: products[index].image,
-                      price: products[index].price.toInt(),
-                      press: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           DetailsScreen(product: demo_product[index]),
-                        //     ));
-                      },
-                    ),
+                    child: ProductCard(product: products[index]),
                   ),
                 ),
               ),

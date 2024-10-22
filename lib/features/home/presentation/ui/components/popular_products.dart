@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/features/home/presentation/providers/home_provider.dart';
-import 'package:stylish/models/Product.dart';
 
 import '../../../../../constants.dart';
 import 'product_card.dart';
@@ -24,23 +23,20 @@ class PopularProducts extends StatelessWidget {
           ),
         ),
         Consumer(builder: (context, ref, child) {
-          final products = ref.watch(popularProductsProvider);
-          return products.when(
-            data: (data) {
+          final productsProvider = ref.watch(popularProductsProvider);
+          return productsProvider.when(
+            data: (products) {
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(
                     parent: AlwaysScrollableScrollPhysics()),
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: List.generate(
-                    products.value!.length,
+                    products.length,
                     (index) => Padding(
                       padding: const EdgeInsets.only(right: defaultPadding),
                       child: ProductCard(
-                        title: products.value![index].title,
-                        image: products.value![index].image,
-                        price: products.value![index].price.toInt(),
-                        press: () {},
+                        product: products[index],
                       ),
                     ),
                   ),
@@ -55,25 +51,6 @@ class PopularProducts extends StatelessWidget {
                 child: Text(error.toString()),
               );
             },
-          );
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List.generate(
-                demo_product.length,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(right: defaultPadding),
-                  child: ProductCard(
-                    title: demo_product[index].title,
-                    image: demo_product[index].image,
-                    price: demo_product[index].price,
-                    press: () {},
-                  ),
-                ),
-              ),
-            ),
           );
         })
       ],
