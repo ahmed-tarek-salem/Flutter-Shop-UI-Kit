@@ -1,10 +1,11 @@
 class Product {
   final int id;
   final String title;
-  final int price;
+  final num price;
   final String description;
-  final Category category;
-  final List<String> images;
+  final String category;
+  final String image;
+  final Rating rating;
 
   Product({
     required this.id,
@@ -12,16 +13,18 @@ class Product {
     required this.price,
     required this.description,
     required this.category,
-    required this.images,
+    required this.image,
+    required this.rating,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         title: json["title"],
-        price: json["price"],
+        price: json["price"]?.toDouble(),
         description: json["description"],
-        category: Category.fromJson(json["category"]),
-        images: List<String>.from(json["images"].map((x) => x)),
+        category: json["category"],
+        image: json["image"],
+        rating: Rating.fromJson(json["rating"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -29,31 +32,28 @@ class Product {
         "title": title,
         "price": price,
         "description": description,
-        "category": category.toJson(),
-        "images": List<dynamic>.from(images.map((x) => x)),
+        "category": category,
+        "image": image,
+        "rating": rating.toJson(),
       };
 }
 
-class Category {
-  final int id;
-  final String name;
-  final String image;
+class Rating {
+  final double rate;
+  final int count;
 
-  Category({
-    required this.id,
-    required this.name,
-    required this.image,
+  Rating({
+    required this.rate,
+    required this.count,
   });
 
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        name: json["name"],
-        image: json["image"],
+  factory Rating.fromJson(Map<String, dynamic> json) => Rating(
+        rate: json["rate"]?.toDouble(),
+        count: json["count"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "image": image,
+        "rate": rate,
+        "count": count,
       };
 }

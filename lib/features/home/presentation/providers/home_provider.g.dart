@@ -8,10 +8,10 @@ part of 'home_provider.dart';
 
 String _$homeProductsHash() => r'ea2fce52f8524bede14b55141744ce91c4f6c160';
 
-/// See also [homeProducts].
-@ProviderFor(homeProducts)
+/// See also [newArrivalProducts].
+@ProviderFor(newArrivalProducts)
 final homeProductsProvider = AutoDisposeFutureProvider<List<Product>>.internal(
-  homeProducts,
+  newArrivalProducts,
   name: r'homeProductsProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$homeProductsHash,

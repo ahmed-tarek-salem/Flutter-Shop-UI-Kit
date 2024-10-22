@@ -5,7 +5,13 @@ import 'package:stylish/features/home/data/repo/home_repo.dart';
 part 'home_provider.g.dart';
 
 @riverpod
-Future<List<Product>> homeProducts(ref) async {
+Future<List<Product>> newArrivalProducts(ref) async {
+  final homeRepo = ref.read(homeRepoProvider);
+  return await homeRepo.getProducts();
+}
+
+@riverpod
+Future<List<Product>> popularProducts(ref) async {
   final homeRepo = ref.read(homeRepoProvider);
   return await homeRepo.getProducts();
 }

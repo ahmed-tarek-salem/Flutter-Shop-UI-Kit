@@ -38,8 +38,8 @@ class NewArrivalProducts extends StatelessWidget {
                     padding: const EdgeInsets.only(right: defaultPadding),
                     child: ProductCard(
                       title: products[index].title,
-                      image: products[index].images[0],
-                      price: products[index].price,
+                      image: products[index].image,
+                      price: products[index].price.toInt(),
                       press: () {
                         // Navigator.push(
                         //     context,

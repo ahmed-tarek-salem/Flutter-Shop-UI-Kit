@@ -38,8 +38,8 @@ class PopularProducts extends StatelessWidget {
                       padding: const EdgeInsets.only(right: defaultPadding),
                       child: ProductCard(
                         title: products.value![index].title,
-                        image: products.value![index].images[0],
-                        price: products.value![index].price,
+                        image: products.value![index].image,
+                        price: products.value![index].price.toInt(),
                         press: () {},
                       ),
                     ),
