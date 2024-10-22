@@ -24,7 +24,7 @@ class PopularProducts extends StatelessWidget {
           ),
         ),
         Consumer(builder: (context, ref, child) {
-          final products = ref.watch(homeProductsProvider);
+          final products = ref.watch(popularProductsProvider);
           return products.when(
             data: (data) {
               return SingleChildScrollView(

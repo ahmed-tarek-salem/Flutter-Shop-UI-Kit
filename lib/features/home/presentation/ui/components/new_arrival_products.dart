@@ -25,7 +25,7 @@ class NewArrivalProducts extends StatelessWidget {
           ),
         ),
         Consumer(builder: (context, ref, child) {
-          final productsProvider = ref.watch(homeProductsProvider);
+          final productsProvider = ref.watch(newArrivalProductsProvider);
           return productsProvider.when(
             data: (products) => SingleChildScrollView(
               physics: const BouncingScrollPhysics(
@@ -55,32 +55,6 @@ class NewArrivalProducts extends StatelessWidget {
             ),
             error: (error, stackTrace) => Text(error.toString()),
             loading: () => const CircularProgressIndicator(),
-          );
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List.generate(
-                demo_product.length,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(right: defaultPadding),
-                  child: ProductCard(
-                    title: demo_product[index].title,
-                    image: demo_product[index].image,
-                    price: demo_product[index].price,
-                    press: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DetailsScreen(product: demo_product[index]),
-                          ));
-                    },
-                  ),
-                ),
-              ),
-            ),
           );
         })
       ],

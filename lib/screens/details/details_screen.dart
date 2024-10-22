@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/constants.dart';
 import 'package:stylish/models/Product.dart';
 
@@ -8,12 +11,12 @@ import 'components/color_dot.dart';
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({Key? key, required this.product}) : super(key: key);
 
-  final Product product;
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: product.bgColor,
+      backgroundColor: backgroundColors[Random().nextInt(4)],
       appBar: AppBar(
         leading: const BackButton(color: Colors.black),
         actions: [
@@ -31,7 +34,7 @@ class DetailsScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Image.asset(
+          Image.network(
             product.image,
             height: MediaQuery.of(context).size.height * 0.4,
             fit: BoxFit.cover,
@@ -66,10 +69,10 @@ class DetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: defaultPadding),
                     child: Text(
-                      "A Henley shirt is a collarless pullover shirt, by a round neckline and a placket about 3 to 5 inches (8 to 13 cm) long and usually having 2–5 buttons.",
+                      product.description,
                     ),
                   ),
                   Text(

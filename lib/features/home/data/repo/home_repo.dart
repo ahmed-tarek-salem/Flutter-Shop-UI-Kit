@@ -6,7 +6,7 @@ import 'package:stylish/features/home/data/data_sources/home_remote_data_source.
 part 'home_repo.g.dart';
 
 abstract class HomeRepoInterface {
-  Future<List<Product>> getProducts();
+  Future<List<ProductModel>> getProducts();
 }
 
 class HomeRepo implements HomeRepoInterface {
@@ -14,9 +14,9 @@ class HomeRepo implements HomeRepoInterface {
 
   HomeRepo({required this.remoteDataSource});
   @override
-  Future<List<Product>> getProducts() async {
+  Future<List<ProductModel>> getProducts() async {
     final data = await remoteDataSource.getProducts();
-    return List<Product>.from(data.map((e) => Product.fromJson(e)));
+    return List<ProductModel>.from(data.map((e) => ProductModel.fromJson(e)));
   }
 }
 
