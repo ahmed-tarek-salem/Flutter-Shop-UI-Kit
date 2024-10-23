@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stylish/constants.dart';
 import 'package:stylish/features/product/presentation/providers/product_provider.dart';
-import 'package:stylish/models/Product.dart';
 
 import 'components/color_dot.dart';
 

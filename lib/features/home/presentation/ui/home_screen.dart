@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stylish/constants.dart';
+import 'package:stylish/features/cart/presentation/ui/cart_screen.dart';
 
 import 'components/categories.dart';
 import 'components/new_arrival_products.dart';
@@ -31,8 +32,11 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: SvgPicture.asset("assets/icons/Notification.svg"),
-            onPressed: () {},
+            icon: Icon(Icons.shopping_cart, color: Colors.grey),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CartScreen()));
+            },
           ),
         ],
       ),
