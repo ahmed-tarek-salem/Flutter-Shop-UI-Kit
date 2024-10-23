@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/application/data/models/product_model.dart';
+import 'package:stylish/application/presentation/components/cart_actions.dart';
+import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
 import 'package:stylish/features/product/presentation/ui/product_screen.dart';
 
 import '../../../../../constants.dart';
@@ -59,7 +62,18 @@ class ProductCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],
-            )
+            ),
+            Consumer(builder: (context, ref, child) {
+              final cartNotifier = ref.read(cartProvider.notifier);
+              final cartPro = ref.watch(cartProvider);
+              return CartActions(
+                onRemove: () {},
+                onAdd: () {
+                  cartNotifier.addToCart(product);
+                },
+                qunatity: product.cartQuantity,
+              );
+            })
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stylish/application/presentation/components/cart_actions.dart';
 import 'package:stylish/constants.dart';
 
 class CartCard extends StatelessWidget {
@@ -35,23 +36,11 @@ class CartCard extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.add, color: primaryColor),
-            onPressed: () {},
-          ),
-          SizedBox(
-            width: 10,
-            child: Center(
-              child: Text(
-                "1",
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.remove, color: primaryColor),
-            onPressed: () {},
-          ),
+          CartActions(
+            onAdd: () => {},
+            onRemove: () => {},
+            qunatity: 1,
+          )
         ],
       ),
     );

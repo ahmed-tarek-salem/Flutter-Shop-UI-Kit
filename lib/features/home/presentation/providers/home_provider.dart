@@ -5,7 +5,7 @@ import 'package:stylish/features/home/data/repo/home_repo.dart';
 part 'home_provider.g.dart';
 
 @riverpod
-Future<List<ProductModel>> newArrivalProducts(ref) async {
+Future<List<ProductModel>> newArrivalProducts(NewArrivalProductsRef ref) async {
   final homeRepo = ref.read(homeRepoProvider);
   final newArrivalProducts = await homeRepo.getProducts();
   //Assume that first 10 products are new arrival because we don't have an api for that
@@ -13,7 +13,7 @@ Future<List<ProductModel>> newArrivalProducts(ref) async {
 }
 
 @riverpod
-Future<List<ProductModel>> popularProducts(ref) async {
+Future<List<ProductModel>> popularProducts(PopularProductsRef ref) async {
   final homeRepo = ref.read(homeRepoProvider);
   final popularProducts = await homeRepo.getProducts();
   //Skip 10 because first 10 products are new arrival
