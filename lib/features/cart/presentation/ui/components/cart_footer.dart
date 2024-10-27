@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/constants.dart';
+import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
 
 class CartFooter extends StatelessWidget {
   const CartFooter({
@@ -21,10 +23,13 @@ class CartFooter extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            Text(
-              "\$" + "100",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            Consumer(builder: (context, ref, child) {
+              final cartNotifier = ref.watch(cartProvider.notifier);
+              return Text(
+                "\$" + cartNotifier.getCartTotal().toString(),
+                style: Theme.of(context).textTheme.titleLarge,
+              );
+            }),
           ]),
           ElevatedButton(
             style: ElevatedButton.styleFrom(

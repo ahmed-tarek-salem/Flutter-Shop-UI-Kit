@@ -50,4 +50,12 @@ class Cart extends _$Cart {
     newArrival.setProductQuantity(cartProduct, quantity);
     popular.setProductQuantity(cartProduct, quantity);
   }
+
+  num getCartTotal() {
+    num total = 0;
+    for (int i = 0; i < state.length; i++) {
+      total += state[i].price * state[i].cartQuantity;
+    }
+    return num.parse(total.toStringAsFixed(2));
+  }
 }

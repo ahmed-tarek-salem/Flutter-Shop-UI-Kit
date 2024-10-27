@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/application/presentation/components/cart_actions.dart';
 import 'package:stylish/constants.dart';
+import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
 import 'package:stylish/features/home/presentation/ui/components/product_card.dart';
 
 class CartCard extends StatelessWidget {
@@ -27,7 +29,9 @@ class CartCard extends StatelessWidget {
             product.image,
             height: 80,
             width: 80,
+            fit: BoxFit.contain,
           ),
+          SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -42,11 +46,14 @@ class CartCard extends StatelessWidget {
               ],
             ),
           ),
-          CartActions(
-            onAdd: () => {},
-            onRemove: () => {},
-            qunatity: product.cartQuantity,
-          )
+          Consumer(builder: (context, ref, child) {
+            final cartNotifier = ref.read(cartProvider.notifier);
+            return CartActions(
+              onAdd: () => cartNotifier.addToCart(product),
+              onRemove: () => cartNotifier.minusFromCart(product),
+              qunatity: product.cartQuantity,
+            );
+          })
         ],
       ),
     );
