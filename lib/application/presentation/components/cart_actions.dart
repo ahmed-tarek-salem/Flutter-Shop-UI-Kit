@@ -20,14 +20,9 @@ class CartActions extends StatelessWidget {
           icon: Icon(Icons.add, color: primaryColor),
           onPressed: onAdd,
         ),
-        SizedBox(
-          width: 10,
-          child: Center(
-            child: Text(
-              qunatity.toString(),
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-          ),
+        Text(
+          qunatity.toString(),
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         IconButton(
           icon: Icon(Icons.remove, color: primaryColor),
