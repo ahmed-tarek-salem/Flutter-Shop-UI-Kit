@@ -42,3 +42,9 @@ class PopularProducts extends _$PopularProducts {
     state = AsyncData(newState);
   }
 }
+
+@riverpod
+void homeRefresh(HomeRefreshRef ref) {
+  ref.refresh(popularProductsProvider);
+  ref.refresh(newArrivalProductsProvider);
+}

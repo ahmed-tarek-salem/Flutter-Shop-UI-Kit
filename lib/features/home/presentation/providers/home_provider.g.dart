@@ -6,6 +6,20 @@ part of 'home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$homeRefreshHash() => r'8b716f65472f8fcc014b8eb61014bd857c10538e';
+
+/// See also [homeRefresh].
+@ProviderFor(homeRefresh)
+final homeRefreshProvider = AutoDisposeProvider<void>.internal(
+  homeRefresh,
+  name: r'homeRefreshProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$homeRefreshHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef HomeRefreshRef = AutoDisposeProviderRef<void>;
 String _$newArrivalProductsHash() =>
     r'1af692fbe37778ac71fa31dd6a68ceb339435d23';
 
