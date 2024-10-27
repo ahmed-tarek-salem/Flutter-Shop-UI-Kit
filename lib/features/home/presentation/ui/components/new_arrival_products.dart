@@ -23,8 +23,9 @@ class NewArrivalProducts extends StatelessWidget {
           ),
         ),
         Consumer(builder: (context, ref, child) {
-          final productsProvider = ref.watch(newArrivalProductsProvider);
-          return productsProvider.when(
+          final newProducts = ref.watch(newArrivalProductsProvider);
+          //final productsProvider = ref.watch(newArrivalProductsProvider);
+          return newProducts.when(
             data: (products) => SingleChildScrollView(
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),

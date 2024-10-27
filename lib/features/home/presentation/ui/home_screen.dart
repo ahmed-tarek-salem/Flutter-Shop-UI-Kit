@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stylish/constants.dart';
+import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
 import 'package:stylish/features/cart/presentation/ui/cart_screen.dart';
 
 import 'components/categories.dart';
@@ -31,13 +33,19 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.shopping_cart, color: Colors.grey),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CartScreen()));
-            },
-          ),
+          Consumer(builder: (context, ref, child) {
+            final cartNotifier = ref.watch(cartProvider);
+
+            return IconButton(
+              icon: Badge(
+                  label: Text(cartNotifier.length.toString()),
+                  child: Icon(Icons.shopping_cart, color: Colors.grey)),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartScreen()));
+              },
+            );
+          }),
         ],
       ),
       body: SingleChildScrollView(

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/application/presentation/components/cart_actions.dart';
 import 'package:stylish/constants.dart';
+import 'package:stylish/features/home/presentation/ui/components/product_card.dart';
 
 class CartCard extends StatelessWidget {
-  const CartCard({super.key});
+  final ProductModel product;
+  const CartCard({
+    super.key,
+    required this.product,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +23,8 @@ class CartCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset(
-            "assets/images/product_1.png",
+          Image.network(
+            product.image,
             height: 80,
             width: 80,
           ),
@@ -27,10 +33,10 @@ class CartCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  "Casual Shirt",
+                  product.title,
                 ),
                 Text(
-                  "\$" + "100",
+                  "\$" + product.price.toString(),
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],
@@ -39,7 +45,7 @@ class CartCard extends StatelessWidget {
           CartActions(
             onAdd: () => {},
             onRemove: () => {},
-            qunatity: 1,
+            qunatity: product.cartQuantity,
           )
         ],
       ),

@@ -65,9 +65,10 @@ class ProductCard extends StatelessWidget {
             ),
             Consumer(builder: (context, ref, child) {
               final cartNotifier = ref.read(cartProvider.notifier);
-              final cartPro = ref.watch(cartProvider);
               return CartActions(
-                onRemove: () {},
+                onRemove: () {
+                  cartNotifier.minusFromCart(product);
+                },
                 onAdd: () {
                   cartNotifier.addToCart(product);
                 },
