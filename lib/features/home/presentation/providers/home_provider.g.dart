@@ -7,7 +7,7 @@ part of 'home_provider.dart';
 // **************************************************************************
 
 String _$newArrivalProductsHash() =>
-    r'4c7ede479a39fe12d9d2da46b9f0e24be5877666';
+    r'1af692fbe37778ac71fa31dd6a68ceb339435d23';
 
 /// See also [NewArrivalProducts].
 @ProviderFor(NewArrivalProducts)
@@ -23,7 +23,7 @@ final newArrivalProductsProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$NewArrivalProducts = AutoDisposeAsyncNotifier<List<ProductModel>>;
-String _$popularProductsHash() => r'14290edcb8fbcaf1f65a1025266eaa61b86d8caf';
+String _$popularProductsHash() => r'6a2c935273a0149255a67610012e868b386ea2f9';
 
 /// See also [PopularProducts].
 @ProviderFor(PopularProducts)

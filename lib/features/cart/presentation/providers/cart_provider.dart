@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stylish/application/data/models/product_model.dart';
+import 'package:stylish/core/helpers/product_helper.dart';
 import 'package:stylish/features/home/presentation/providers/home_provider.dart';
 
 part 'cart_provider.g.dart';
@@ -12,36 +13,34 @@ class Cart extends _$Cart {
   }
 
   Future<void> addToCart(ProductModel cartProduct) async {
-    if (state.isNotEmpty == true &&
-        state.any((element) => element.id == cartProduct.id)) {
-      state = state.map((product) {
-        if (product.id == cartProduct.id) {
-          return product.copyWith(cartQuantity: product.cartQuantity + 1);
-        }
-        return product; // Keep other products unchanged
-      }).toList();
-    } else {
-      state = [...state, cartProduct.copyWith(cartQuantity: 1)];
-    }
+    final productHelper = ref.read(productHelperProvider);
+    final newState = productHelper.updateProductQuantity(
+        products: state,
+        cartProduct: cartProduct,
+        quantity: cartProduct.cartQuantity + 1);
+
+    state = newState;
     updateProvidersQuantities(cartProduct, cartProduct.cartQuantity + 1);
   }
 
   Future<void> minusFromCart(ProductModel cartProduct) async {
     if (cartProduct.cartQuantity > 0) {
-      final newProduct = state
-          .firstWhere((e) => e.id == cartProduct.id)
-          .copyWith(cartQuantity: cartProduct.cartQuantity - 1);
-      state = state.map((product) {
-        if (product.id == cartProduct.id) {
-          return newProduct;
-        }
-        return product;
-      }).toList();
-      updateProvidersQuantities(cartProduct, cartProduct.cartQuantity - 1);
-      if (newProduct.cartQuantity == 0) {
-        state = state.where((element) => element.id != cartProduct.id).toList();
-      }
+      final productHelper = ref.read(productHelperProvider);
+      final newState = productHelper.updateProductQuantity(
+          products: state,
+          cartProduct: cartProduct,
+          quantity: cartProduct.cartQuantity - 1);
+      state = newState;
     }
+
+    // If quantity is 1 remove the product completely from cart
+    if (cartProduct.cartQuantity == 1) {
+      state = state.where((element) => element.id != cartProduct.id).toList();
+    }
+
+    // If it's 0 then don't do anything
+    if (cartProduct.cartQuantity > 0)
+      updateProvidersQuantities(cartProduct, cartProduct.cartQuantity - 1);
   }
 
   updateProvidersQuantities(ProductModel cartProduct, int quantity) {
