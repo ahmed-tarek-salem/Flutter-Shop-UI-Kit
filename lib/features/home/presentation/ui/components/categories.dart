@@ -4,8 +4,8 @@ import 'package:stylish/models/Category.dart';
 
 import '../../../../../constants.dart';
 
-class Categories extends StatelessWidget {
-  const Categories({
+class CategoriesSection extends StatelessWidget {
+  const CategoriesSection({
     Key? key,
   }) : super(key: key);
 

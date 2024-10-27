@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stylish/constants.dart';
 import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
 import 'package:stylish/features/cart/presentation/ui/cart_screen.dart';
+import 'package:stylish/features/home/presentation/providers/home_provider.dart';
 
 import 'components/categories.dart';
 import 'components/new_arrival_products.dart';
@@ -48,34 +49,39 @@ class HomeScreen extends StatelessWidget {
           }),
         ],
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()),
-        padding: const EdgeInsets.all(defaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Explore",
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(fontWeight: FontWeight.w500, color: Colors.black),
+      body: Consumer(builder: (context, ref, child) {
+        return RefreshIndicator(
+          onRefresh: () async {
+            ref.read(homeRefreshProvider);
+          },
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
+            padding: const EdgeInsets.all(defaultPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Explore",
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      fontWeight: FontWeight.w500, color: Colors.black),
+                ),
+                const Text(
+                  "best Outfits for you",
+                  style: TextStyle(fontSize: 18),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: defaultPadding),
+                  child: SearchForm(),
+                ),
+                const CategoriesSection(),
+                const NewArrivalProductsSection(),
+                const PopularProductsSection(),
+              ],
             ),
-            const Text(
-              "best Outfits for you",
-              style: TextStyle(fontSize: 18),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: defaultPadding),
-              child: SearchForm(),
-            ),
-            const Categories(),
-            const NewArrivalProducts(),
-            const PopularProducts(),
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 }

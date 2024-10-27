@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 
@@ -24,32 +26,44 @@ class AppError {
   }
 }
 
-enum ErrorType {
-  network,
-  server,
-  validation,
-  unknown,
-}
+enum ErrorType { network, server, validation, unknown, format }
 
 class ErrorHandler {
   static AppError handleError(Object? error) {
     log(error.toString());
-    if (error.runtimeType == DioException) {
-      switch ((error as DioException).type) {
-        case DioExceptionType.connectionTimeout:
-        case DioExceptionType.sendTimeout:
-        case DioExceptionType.receiveTimeout:
-          return AppError('Connection Timeout', ErrorType.network);
-        case DioExceptionType.badResponse:
-          return AppError.serverErrorParse(error);
-        case DioExceptionType.cancel:
-          return AppError('Request Cancelled', ErrorType.network);
-        case DioExceptionType.unknown:
-        default:
-          return AppError('Unexpected Error', ErrorType.unknown);
-      }
-    } else {
-      return AppError(error.toString(), ErrorType.unknown);
+    log(error.runtimeType.toString(), name: "Error type");
+    switch (error) {
+      case DioException dioError:
+        switch (dioError.type) {
+          case DioExceptionType.connectionTimeout:
+          case DioExceptionType.sendTimeout:
+          case DioExceptionType.receiveTimeout:
+            return AppError('Connection Timeout', ErrorType.network);
+          case DioExceptionType.connectionError:
+            return AppError(
+                "Check internet connection and try again", ErrorType.network);
+          case DioExceptionType.badResponse:
+            return AppError.serverErrorParse(dioError);
+          case DioExceptionType.cancel:
+            return AppError('Request Cancelled', ErrorType.network);
+          case DioExceptionType.unknown:
+          default:
+            return AppError('Unexpected Error', ErrorType.unknown);
+        }
+
+      case TypeError _:
+        return AppError(
+            "Couldn't parse the response, $error", ErrorType.format);
+
+      case SocketException _:
+        return AppError(
+            "Check internet connection and try again", ErrorType.network);
+
+      case TimeoutException _:
+        return AppError("Connection Timeout", ErrorType.network);
+
+      default:
+        return AppError(error.toString(), ErrorType.unknown);
     }
   }
 }

@@ -1,13 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stylish/application/data/models/app_error_model.dart';
 import 'package:stylish/features/home/presentation/providers/home_provider.dart';
 
 import '../../../../../constants.dart';
 import 'product_card.dart';
 import 'section_title.dart';
 
-class NewArrivalProducts extends StatelessWidget {
-  const NewArrivalProducts({
+class NewArrivalProductsSection extends StatelessWidget {
+  const NewArrivalProductsSection({
     Key? key,
   }) : super(key: key);
 
@@ -40,7 +43,9 @@ class NewArrivalProducts extends StatelessWidget {
                 ),
               ),
             ),
-            error: (error, stackTrace) => Text(error.toString()),
+            error: (error, stackTrace) {
+              return Text(ErrorHandler.handleError(error).message);
+            },
             loading: () => const CircularProgressIndicator(),
           );
         })

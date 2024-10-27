@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stylish/application/data/models/app_error_model.dart';
 import 'package:stylish/features/home/presentation/providers/home_provider.dart';
 
 import '../../../../../constants.dart';
 import 'product_card.dart';
 import 'section_title.dart';
 
-class PopularProducts extends StatelessWidget {
-  const PopularProducts({
+class PopularProductsSection extends StatelessWidget {
+  const PopularProductsSection({
     Key? key,
   }) : super(key: key);
 
@@ -47,8 +48,10 @@ class PopularProducts extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
             error: (error, stackTrace) {
-              return Center(
-                child: Text(error.toString()),
+              return Column(
+                children: [
+                  Text(ErrorHandler.handleError(error).message),
+                ],
               );
             },
           );
