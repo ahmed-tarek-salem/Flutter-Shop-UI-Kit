@@ -43,6 +43,7 @@ class Cart extends _$Cart {
       updateProvidersQuantities(cartProduct, cartProduct.cartQuantity - 1);
   }
 
+  /// Update the product qunatity in all the providers the uses this product
   updateProvidersQuantities(ProductModel cartProduct, int quantity) {
     final newArrival = ref.watch(newArrivalProductsProvider.notifier);
     final popular = ref.watch(popularProductsProvider.notifier);
