@@ -58,4 +58,21 @@ class Cart extends _$Cart {
     }
     return num.parse(total.toStringAsFixed(2));
   }
+
+  List<ProductModel> syncWithCart(List<ProductModel> products) {
+    final updatedProducts = <ProductModel>[];
+    for (var product in products) {
+      // Check if the product is already in the cart
+      if (state.map((e) => e.id).toList().contains(product.id)) {
+        // If it's already in the cart, add it but with the latest quantity from cart
+        final cartProduct = state.firstWhere((e) => e.id == product.id);
+        updatedProducts
+            .add(product.copyWith(cartQuantity: cartProduct.cartQuantity));
+      } else {
+        // If it's not in the cart, add it to [cartProducts]
+        updatedProducts.add(product);
+      }
+    }
+    return updatedProducts;
+  }
 }
