@@ -11,6 +11,7 @@ class CategoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryProducts = ref.watch(categoryProductsProvider(title));
+    final categoryNotifier = ref.read(categoryProductsProvider(title).notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -27,6 +28,14 @@ class CategoryScreen extends ConsumerWidget {
           ),
           itemBuilder: (context, index) => ProductCard(
             product: products[index],
+            onAddToCart: (product) {
+              categoryNotifier.setProductQuantity(
+                  product, product.cartQuantity + 1);
+            },
+            onRemoveFromCart: (product) {
+              categoryNotifier.setProductQuantity(product,
+                  product.cartQuantity == 0 ? 0 : product.cartQuantity - 1);
+            },
           ),
         ),
         error: (error, stackTrace) =>

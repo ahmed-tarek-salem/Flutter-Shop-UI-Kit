@@ -11,9 +11,13 @@ class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
     required this.product,
+    this.onAddToCart,
+    this.onRemoveFromCart,
   });
 
   final ProductModel product;
+  final Function(ProductModel product)? onAddToCart;
+  final Function(ProductModel product)? onRemoveFromCart;
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +72,11 @@ class ProductCard extends StatelessWidget {
               return CartActions(
                 onRemove: () {
                   cartNotifier.minusFromCart(product);
+                  onRemoveFromCart?.call(product);
                 },
                 onAdd: () {
                   cartNotifier.addToCart(product);
+                  onAddToCart?.call(product);
                 },
                 qunatity: product.cartQuantity,
               );

@@ -6,7 +6,7 @@ part of 'category_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$categoryProductsHash() => r'208328c55e770a8b67423a9d2797badd4baa5da4';
+String _$categoryProductsHash() => r'1516c1182ce49f1b44979a82de8ff65de66f1a8f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,16 +29,25 @@ class _SystemHash {
   }
 }
 
-/// See also [categoryProducts].
-@ProviderFor(categoryProducts)
+abstract class _$CategoryProducts
+    extends BuildlessAutoDisposeAsyncNotifier<List<ProductModel>> {
+  late final String categoryTitle;
+
+  FutureOr<List<ProductModel>> build(
+    String categoryTitle,
+  );
+}
+
+/// See also [CategoryProducts].
+@ProviderFor(CategoryProducts)
 const categoryProductsProvider = CategoryProductsFamily();
 
-/// See also [categoryProducts].
+/// See also [CategoryProducts].
 class CategoryProductsFamily extends Family<AsyncValue<List<ProductModel>>> {
-  /// See also [categoryProducts].
+  /// See also [CategoryProducts].
   const CategoryProductsFamily();
 
-  /// See also [categoryProducts].
+  /// See also [CategoryProducts].
   CategoryProductsProvider call(
     String categoryTitle,
   ) {
@@ -71,17 +80,14 @@ class CategoryProductsFamily extends Family<AsyncValue<List<ProductModel>>> {
   String? get name => r'categoryProductsProvider';
 }
 
-/// See also [categoryProducts].
-class CategoryProductsProvider
-    extends AutoDisposeFutureProvider<List<ProductModel>> {
-  /// See also [categoryProducts].
+/// See also [CategoryProducts].
+class CategoryProductsProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    CategoryProducts, List<ProductModel>> {
+  /// See also [CategoryProducts].
   CategoryProductsProvider(
     String categoryTitle,
   ) : this._internal(
-          (ref) => categoryProducts(
-            ref as CategoryProductsRef,
-            categoryTitle,
-          ),
+          () => CategoryProducts()..categoryTitle = categoryTitle,
           from: categoryProductsProvider,
           name: r'categoryProductsProvider',
           debugGetCreateSourceHash:
@@ -107,13 +113,20 @@ class CategoryProductsProvider
   final String categoryTitle;
 
   @override
-  Override overrideWith(
-    FutureOr<List<ProductModel>> Function(CategoryProductsRef provider) create,
+  FutureOr<List<ProductModel>> runNotifierBuild(
+    covariant CategoryProducts notifier,
   ) {
+    return notifier.build(
+      categoryTitle,
+    );
+  }
+
+  @override
+  Override overrideWith(CategoryProducts Function() create) {
     return ProviderOverride(
       origin: this,
       override: CategoryProductsProvider._internal(
-        (ref) => create(ref as CategoryProductsRef),
+        () => create()..categoryTitle = categoryTitle,
         from: from,
         name: null,
         dependencies: null,
@@ -125,7 +138,8 @@ class CategoryProductsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<ProductModel>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<CategoryProducts, List<ProductModel>>
+      createElement() {
     return _CategoryProductsProviderElement(this);
   }
 
@@ -144,14 +158,15 @@ class CategoryProductsProvider
   }
 }
 
-mixin CategoryProductsRef on AutoDisposeFutureProviderRef<List<ProductModel>> {
+mixin CategoryProductsRef
+    on AutoDisposeAsyncNotifierProviderRef<List<ProductModel>> {
   /// The parameter `categoryTitle` of this provider.
   String get categoryTitle;
 }
 
 class _CategoryProductsProviderElement
-    extends AutoDisposeFutureProviderElement<List<ProductModel>>
-    with CategoryProductsRef {
+    extends AutoDisposeAsyncNotifierProviderElement<CategoryProducts,
+        List<ProductModel>> with CategoryProductsRef {
   _CategoryProductsProviderElement(super.provider);
 
   @override
