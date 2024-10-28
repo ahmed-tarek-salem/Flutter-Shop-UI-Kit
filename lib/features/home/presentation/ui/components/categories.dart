@@ -1,28 +1,45 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:stylish/models/Category.dart';
+import 'package:stylish/application/data/models/category_model.dart';
+import 'package:stylish/features/category/presentation/ui/category_screen.dart';
+import 'package:stylish/features/home/presentation/providers/home_provider.dart';
 
 import '../../../../../constants.dart';
 
-class CategoriesSection extends StatelessWidget {
-  const CategoriesSection({
-    Key? key,
-  }) : super(key: key);
+class CategoriesSection extends ConsumerWidget {
+  const CategoriesSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categories = ref.watch(categoriesProvider);
+
     return SizedBox(
       height: 84,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: demo_categories.length,
-        itemBuilder: (context, index) => CategoryCard(
-          icon: demo_categories[index].icon,
-          title: demo_categories[index].title,
-          press: () {},
+      child: categories.when(
+        data: (categories) => ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: categories.length,
+          itemBuilder: (context, index) => CategoryCard(
+            icon: categories[index].icon,
+            title: categories[index].title,
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CategoryScreen(title: categories[index].title)));
+            },
+          ),
+          separatorBuilder: (context, index) =>
+              const SizedBox(width: defaultPadding),
         ),
-        separatorBuilder: (context, index) =>
-            const SizedBox(width: defaultPadding),
+        error: (error, stackTrace) => Text(error.toString()),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
     );
   }

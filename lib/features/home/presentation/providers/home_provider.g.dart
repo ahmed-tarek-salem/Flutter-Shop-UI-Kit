@@ -6,7 +6,22 @@ part of 'home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeRefreshHash() => r'8b716f65472f8fcc014b8eb61014bd857c10538e';
+String _$categoriesHash() => r'3756dada476191c81a8f39d049434f501e1bfdf1';
+
+/// See also [categories].
+@ProviderFor(categories)
+final categoriesProvider =
+    AutoDisposeFutureProvider<List<CategoryModel>>.internal(
+  categories,
+  name: r'categoriesProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$categoriesHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CategoriesRef = AutoDisposeFutureProviderRef<List<CategoryModel>>;
+String _$homeRefreshHash() => r'df56560bdede29153bc2321b447a59211a04558f';
 
 /// See also [homeRefresh].
 @ProviderFor(homeRefresh)

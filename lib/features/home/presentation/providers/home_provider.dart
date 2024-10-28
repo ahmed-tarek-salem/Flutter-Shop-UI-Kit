@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:stylish/application/data/models/category_model.dart';
 import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/core/helpers/product_helper.dart';
 import 'package:stylish/features/home/data/repo/home_repo.dart';
@@ -44,7 +45,15 @@ class PopularProducts extends _$PopularProducts {
 }
 
 @riverpod
+Future<List<CategoryModel>> categories(CategoriesRef ref) async {
+  final homeRepo = ref.read(homeRepoProvider);
+  final categories = await homeRepo.getCategories();
+  return categories;
+}
+
+@riverpod
 void homeRefresh(HomeRefreshRef ref) {
   ref.refresh(popularProductsProvider);
   ref.refresh(newArrivalProductsProvider);
+  ref.refresh(categoriesProvider);
 }

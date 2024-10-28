@@ -6,6 +6,7 @@ part 'home_remote_data_source.g.dart';
 
 abstract class HomeRemoteDataSourceInterface {
   Future<List<dynamic>> getProducts();
+  Future<List<dynamic>> getCategories();
 }
 
 class HomeRemoteDataSource implements HomeRemoteDataSourceInterface {
@@ -16,6 +17,12 @@ class HomeRemoteDataSource implements HomeRemoteDataSourceInterface {
     // Note that no need for try catch blocks here, as riverpod handles it internally
     // when using FutureProviders or AsyncNotifierProviders using "when".
     final response = await networkService.getData(url: AppEndpoints.products);
+    return response.data;
+  }
+
+  @override
+  Future<List<dynamic>> getCategories() async {
+    final response = await networkService.getData(url: AppEndpoints.categories);
     return response.data;
   }
 }
