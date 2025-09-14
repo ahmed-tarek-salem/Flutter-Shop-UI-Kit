@@ -16,34 +16,34 @@ class CategoryScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: categoryProducts.when(
-        data: (products) => GridView.builder(
-          itemCount: products.length,
-          padding: const EdgeInsets.all(defaultPadding),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: defaultPadding,
-            crossAxisSpacing: defaultPadding,
-            childAspectRatio: 0.75,
-          ),
-          itemBuilder: (context, index) => ProductCard(
-            product: products[index],
-            onAddToCart: (product) {
-              categoryNotifier.setProductQuantity(
-                  product, product.cartQuantity + 1);
-            },
-            onRemoveFromCart: (product) {
-              categoryNotifier.setProductQuantity(product,
-                  product.cartQuantity == 0 ? 0 : product.cartQuantity - 1);
-            },
-          ),
-        ),
-        error: (error, stackTrace) =>
-            Text(error.toString(), textAlign: TextAlign.center),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+      // body: categoryProducts.when(
+      //   data: (products) => GridView.builder(
+      //     itemCount: products.length,
+      //     padding: const EdgeInsets.all(defaultPadding),
+      //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      //       crossAxisCount: 2,
+      //       mainAxisSpacing: defaultPadding,
+      //       crossAxisSpacing: defaultPadding,
+      //       childAspectRatio: 0.75,
+      //     ),
+      //     itemBuilder: (context, index) => ProductCard(
+      //       product: products[index],
+      //       onAddToCart: (product) {
+      //         categoryNotifier.setProductQuantity(
+      //             product, product.cartQuantity + 1);
+      //       },
+      //       onRemoveFromCart: (product) {
+      //         categoryNotifier.setProductQuantity(product,
+      //             product.cartQuantity == 0 ? 0 : product.cartQuantity - 1);
+      //       },
+      //     ),
+      //   ),
+      //   error: (error, stackTrace) =>
+      //       Text(error.toString(), textAlign: TextAlign.center),
+      //   loading: () => const Center(
+      //     child: CircularProgressIndicator(),
+      //   ),
+      // ),
     );
   }
 }

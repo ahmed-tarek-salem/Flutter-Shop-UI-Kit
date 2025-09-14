@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/application/presentation/components/cart_actions.dart';
-import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
+import 'package:stylish/application/stores/cart_store.dart';
 import 'package:stylish/features/product/presentation/ui/product_screen.dart';
 
 import '../../../../../constants.dart';
@@ -11,13 +10,11 @@ class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
     required this.product,
-    this.onAddToCart,
-    this.onRemoveFromCart,
+    required this.cartStore,
   });
 
   final ProductModel product;
-  final Function(ProductModel product)? onAddToCart;
-  final Function(ProductModel product)? onRemoveFromCart;
+  final CartStore cartStore;
 
   @override
   Widget build(BuildContext context) {
@@ -67,20 +64,15 @@ class ProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            Consumer(builder: (context, ref, child) {
-              final cartNotifier = ref.read(cartProvider.notifier);
-              return CartActions(
-                onRemove: () {
-                  cartNotifier.minusFromCart(product);
-                  onRemoveFromCart?.call(product);
-                },
-                onAdd: () {
-                  cartNotifier.addToCart(product);
-                  onAddToCart?.call(product);
-                },
-                qunatity: product.cartQuantity,
-              );
-            })
+            ListenableBuilder(
+                listenable: cartStore,
+                builder: (context, child) {
+                  return CartActions(
+                    qunatity: cartStore.getProductQuantity(product.id),
+                    onRemove: () => cartStore.minusFromCart(product),
+                    onAdd: () => cartStore.addToCart(product),
+                  );
+                })
           ],
         ),
       ),

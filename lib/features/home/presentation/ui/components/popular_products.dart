@@ -41,6 +41,7 @@ class PopularProductsSection extends StatelessWidget {
                         padding: const EdgeInsets.only(right: defaultPadding),
                         child: ProductCard(
                           product: products[index],
+                          cartStore: homeViewModel.cartStore,
                         ),
                       ),
                     ),

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stylish/application/data/models/category_model.dart';
 import 'package:stylish/application/data/models/product_model.dart';
+import 'package:stylish/application/stores/cart_store.dart';
 import 'package:stylish/core/state/async_state.dart';
 import 'package:stylish/features/home/data/repo/home_repo.dart';
 
 class HomeViewModel {
   final HomeRepoInterface _homeRepo;
+  final CartStore cartStore;
 
-  HomeViewModel({required HomeRepoInterface homeRepo}) : _homeRepo = homeRepo {
+  HomeViewModel({required HomeRepoInterface homeRepo, required this.cartStore})
+      : _homeRepo = homeRepo {
     getHomeData();
   }
 
@@ -53,5 +56,9 @@ class HomeViewModel {
     } catch (e) {
       categories.value = Error(e.toString());
     }
+  }
+
+  int getProductQuantity(int id) {
+    return cartStore.getProductQuantity(id);
   }
 }

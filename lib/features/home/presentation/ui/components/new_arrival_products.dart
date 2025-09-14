@@ -41,7 +41,10 @@ class NewArrivalProductsSection extends StatelessWidget {
                         products.length,
                         (index) => Padding(
                           padding: const EdgeInsets.only(right: defaultPadding),
-                          child: ProductCard(product: products[index]),
+                          child: ProductCard(
+                            product: products[index],
+                            cartStore: homeViewModel.cartStore,
+                          ),
                         ),
                       ),
                     ),

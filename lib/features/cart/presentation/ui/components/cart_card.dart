@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/application/presentation/components/cart_actions.dart';
 import 'package:stylish/constants.dart';
-import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
-import 'package:stylish/features/home/presentation/ui/components/product_card.dart';
+import 'package:stylish/features/cart/presentation/view_model/cart_view_model.dart';
 
 class CartCard extends StatelessWidget {
+  final CartViewModel cartViewModel;
   final ProductModel product;
   const CartCard({
     super.key,
     required this.product,
+    required this.cartViewModel,
   });
 
   @override
@@ -46,14 +46,15 @@ class CartCard extends StatelessWidget {
               ],
             ),
           ),
-          Consumer(builder: (context, ref, child) {
-            final cartNotifier = ref.read(cartProvider.notifier);
-            return CartActions(
-              onAdd: () => cartNotifier.addToCart(product),
-              onRemove: () => cartNotifier.minusFromCart(product),
-              qunatity: product.cartQuantity,
-            );
-          })
+          ListenableBuilder(
+              listenable: cartViewModel.cartStore,
+              builder: (context, child) {
+                return CartActions(
+                  qunatity: cartViewModel.getCartQuantity(product.id),
+                  onRemove: () => cartViewModel.minusFromCart(product),
+                  onAdd: () => cartViewModel.addToCart(product),
+                );
+              })
         ],
       ),
     );
