@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stylish/application/data/models/app_error_model.dart';
 import 'package:stylish/application/data/models/product_model.dart';
-import 'package:stylish/features/home/presentation/providers/home_provider.dart';
+import 'package:stylish/core/state/async_state.dart';
 import 'package:stylish/features/home/presentation/view_models/home_view_model.dart';
 
 import '../../../../../constants.dart';
@@ -29,30 +25,29 @@ class NewArrivalProductsSection extends StatelessWidget {
         ),
         ValueListenableBuilder<AsyncState<List<ProductModel>>>(
             valueListenable: homeViewModel.newArrivalProducts,
-            builder: (context, value, child) {
-              if (value.isLoading) {
-                return const CircularProgressIndicator();
-              }
-              if (value.error != null) {
-                return Text(value.error!);
-              }
-              final products = value.data ?? [];
-              if (products.isEmpty) {
-                return const Center(child: Text("No products available"));
-              }
-              return SingleChildScrollView(
-                physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    products.length,
-                    (index) => Padding(
-                      padding: const EdgeInsets.only(right: defaultPadding),
-                      child: ProductCard(product: products[index]),
+            builder: (context, state, child) {
+              return state.when(
+                loading: () => const CircularProgressIndicator(),
+                success: (products) {
+                  if (products.isEmpty) {
+                    return const Center(child: Text("No products available"));
+                  }
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        products.length,
+                        (index) => Padding(
+                          padding: const EdgeInsets.only(right: defaultPadding),
+                          child: ProductCard(product: products[index]),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
+                error: (message) => Text(message),
               );
             }),
       ],
