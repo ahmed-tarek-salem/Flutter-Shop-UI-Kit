@@ -14,21 +14,32 @@ class HomeRemoteDataSource implements HomeRemoteDataSourceInterface {
   HomeRemoteDataSource({required this.networkService});
   @override
   Future<List<dynamic>> getProducts() async {
-    // Note that no need for try catch blocks here, as riverpod handles it internally
-    // when using FutureProviders or AsyncNotifierProviders using "when".
-    final response = await networkService.getData(url: AppEndpoints.products);
-    return response.data;
+    try {
+      final response = await networkService.getData(url: AppEndpoints.products);
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<List<dynamic>> getCategories() async {
-    final response = await networkService.getData(url: AppEndpoints.categories);
-    return response.data;
+    try {
+      final response =
+          await networkService.getData(url: AppEndpoints.categories);
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 
 @riverpod
 HomeRemoteDataSource homeRemoteDataSource(ref) {
-  final networkService = ref.read(networkServiceProvider);
-  return HomeRemoteDataSource(networkService: networkService);
+  try {
+    final networkService = ref.read(networkServiceProvider);
+    return HomeRemoteDataSource(networkService: networkService);
+  } catch (e) {
+    rethrow;
+  }
 }

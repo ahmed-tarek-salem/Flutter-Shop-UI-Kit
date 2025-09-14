@@ -1,46 +1,57 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stylish/application/data/models/category_model.dart';
+import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/features/category/presentation/ui/category_screen.dart';
 import 'package:stylish/features/home/presentation/providers/home_provider.dart';
+import 'package:stylish/features/home/presentation/view_models/home_view_model.dart';
 
 import '../../../../../constants.dart';
 
-class CategoriesSection extends ConsumerWidget {
-  const CategoriesSection({super.key});
+class CategoriesSection extends StatelessWidget {
+  final HomeViewModel homeViewModel;
+  const CategoriesSection({Key? key, required this.homeViewModel})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoriesProvider);
-
+  Widget build(BuildContext context) {
     return SizedBox(
       height: 84,
-      child: categories.when(
-        data: (categories) => ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemCount: categories.length,
-          itemBuilder: (context, index) => CategoryCard(
-            icon: categories[index].icon,
-            title: categories[index].title,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CategoryScreen(title: categories[index].title)));
-            },
-          ),
-          separatorBuilder: (context, index) =>
-              const SizedBox(width: defaultPadding),
-        ),
-        error: (error, stackTrace) => Text(error.toString()),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+      child: ValueListenableBuilder<AsyncState<List<CategoryModel>>>(
+          valueListenable: homeViewModel.categories,
+          builder: (context, value, child) {
+            if (value.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (value.error != null) {
+              return Text(value.error!);
+            }
+            final categories = value.data ?? [];
+            if (categories.isEmpty) {
+              return const Center(child: Text("No categories available"));
+            }
+            return ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) => CategoryCard(
+                icon: categories[index].icon,
+                title: categories[index].title,
+                press: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CategoryScreen(title: categories[index].title)));
+                },
+              ),
+              separatorBuilder: (context, index) =>
+                  const SizedBox(width: defaultPadding),
+            );
+          }),
     );
   }
 }
