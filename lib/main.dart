@@ -6,7 +6,7 @@ import 'package:stylish/features/home/presentation/ui/home_screen.dart';
 
 void main() {
   setupLocator();
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(ProviderScope(child: SafeArea(top: false, child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {
