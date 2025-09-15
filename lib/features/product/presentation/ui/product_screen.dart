@@ -3,15 +3,31 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/constants.dart';
-import 'package:stylish/features/product/presentation/providers/product_provider.dart';
+import 'package:stylish/core/services/service_locator.dart';
+import 'package:stylish/core/state/async_state.dart';
+import 'package:stylish/features/product/presentation/view_model/product_view_model.dart';
 
 import 'components/color_dot.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key, required this.id}) : super(key: key);
 
   final int id;
+
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  late final ProductViewModel productViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    productViewModel = getIt<ProductViewModel>(param1: widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,101 +48,103 @@ class ProductScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Consumer(builder: (context, ref, child) {
-        final productProv = ref.watch(productProvider(id));
-        return productProv.when(
-          data: (product) {
-            return Column(
-              children: [
-                Image.network(
-                  product.image,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(height: defaultPadding * 1.5),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(defaultPadding,
-                        defaultPadding * 2, defaultPadding, defaultPadding),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(defaultBorderRadius * 3),
-                        topRight: Radius.circular(defaultBorderRadius * 3),
-                      ),
+      body: ValueListenableBuilder<AsyncState<ProductModel>>(
+          valueListenable: productViewModel.product,
+          builder: (context, state, child) {
+            return state.when(
+              success: (product) {
+                return Column(
+                  children: [
+                    Image.network(
+                      product.image,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      fit: BoxFit.contain,
                     ),
-                    child: ListView(
-                      children: [
-                        Row(
+                    const SizedBox(height: defaultPadding * 1.5),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(defaultPadding,
+                            defaultPadding * 2, defaultPadding, defaultPadding),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(defaultBorderRadius * 3),
+                            topRight: Radius.circular(defaultBorderRadius * 3),
+                          ),
+                        ),
+                        child: ListView(
                           children: [
-                            Expanded(
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    product.title,
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                ),
+                                const SizedBox(width: defaultPadding),
+                                Text(
+                                  "\$" + product.price.toString(),
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: defaultPadding),
                               child: Text(
-                                product.title,
-                                style: Theme.of(context).textTheme.titleLarge,
+                                product.description,
                               ),
                             ),
-                            const SizedBox(width: defaultPadding),
                             Text(
-                              "\$" + product.price.toString(),
-                              style: Theme.of(context).textTheme.titleLarge,
+                              "Colors",
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
+                            const SizedBox(height: defaultPadding / 2),
+                            Row(
+                              children: const [
+                                ColorDot(
+                                  color: Color(0xFFBEE8EA),
+                                  isActive: false,
+                                ),
+                                ColorDot(
+                                  color: Color(0xFF141B4A),
+                                  isActive: true,
+                                ),
+                                ColorDot(
+                                  color: Color(0xFFF4E5C3),
+                                  isActive: false,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: defaultPadding * 2),
+                            Center(
+                              child: SizedBox(
+                                width: 200,
+                                height: 48,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                      shape: const StadiumBorder()),
+                                  child: const Text("Add to Cart"),
+                                ),
+                              ),
+                            )
                           ],
                         ),
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: defaultPadding),
-                          child: Text(
-                            product.description,
-                          ),
-                        ),
-                        Text(
-                          "Colors",
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: defaultPadding / 2),
-                        Row(
-                          children: const [
-                            ColorDot(
-                              color: Color(0xFFBEE8EA),
-                              isActive: false,
-                            ),
-                            ColorDot(
-                              color: Color(0xFF141B4A),
-                              isActive: true,
-                            ),
-                            ColorDot(
-                              color: Color(0xFFF4E5C3),
-                              isActive: false,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: defaultPadding * 2),
-                        Center(
-                          child: SizedBox(
-                            width: 200,
-                            height: 48,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: primaryColor,
-                                  shape: const StadiumBorder()),
-                              child: const Text("Add to Cart"),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
+                      ),
+                    )
+                  ],
+                );
+              },
+              error: (error) => Text(error.toString()),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
             );
-          },
-          error: (error, stack) => Text(error.toString()),
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      }),
+          }),
     );
   }
 }

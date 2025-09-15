@@ -7,6 +7,9 @@ import 'package:stylish/features/category/presentation/view_model/category_view_
 import 'package:stylish/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:stylish/features/home/data/repo/home_repo.dart';
 import 'package:stylish/features/home/presentation/view_models/home_view_model.dart';
+import 'package:stylish/features/product/data/data_sources/product_remote_data_source.dart';
+import 'package:stylish/features/product/data/repos/product_repo.dart';
+import 'package:stylish/features/product/presentation/view_model/product_view_model.dart';
 
 import '../services/network_service.dart';
 
@@ -24,11 +27,17 @@ void setupLocator() {
   getIt.registerLazySingleton<CategoryDataSource>(
     () => CategoryRemoteDataSource(networkService: getIt()),
   );
+
+  getIt.registerLazySingleton<ProductRemoteDataSourceInterface>(
+    () => ProductRemoteDataSource(networkService: getIt()),
+  );
   // Repositories
   getIt.registerLazySingleton<HomeRepoInterface>(
       () => HomeRepo(remoteDataSource: getIt()));
   getIt.registerLazySingleton<CategoryRepo>(
       () => CategoryRepoImpl(remoteDataSource: getIt()));
+  getIt.registerLazySingleton<ProductRepoInterface>(
+      () => ProductRepo(remoteDataSource: getIt()));
 
   // ViewModels (factory so every screen gets a new instance)
   getIt.registerFactory<HomeViewModel>(
@@ -38,15 +47,17 @@ void setupLocator() {
   getIt.registerFactory<CartViewModel>(
       () => CartViewModel(cartStore: getIt<CartStore>()));
 
-  // getIt.registerFactory<CategoryViewModel>(
-  //   () => CategoryViewModel(categoryRepo: getIt<CategoryRepo>()),
-  // );
-
   getIt.registerFactoryParam<CategoryViewModel, String, String?>(
     (param1, param2) => CategoryViewModel(
       categoryRepo: getIt<CategoryRepo>(),
       cartStore: getIt<CartStore>(),
       categoryTitle: param1,
+    ),
+  );
+  getIt.registerFactoryParam<ProductViewModel, int, int?>(
+    (param1, param2) => ProductViewModel(
+      id: param1,
+      productRepo: getIt<ProductRepoInterface>(),
     ),
   );
 }
