@@ -58,6 +58,14 @@ class HomeViewModel {
     }
   }
 
+  void addToCart(ProductModel product) {
+    cartStore.addToCart(product);
+  }
+
+  void minusFromCart(ProductModel product) {
+    cartStore.minusFromCart(product);
+  }
+
   int getProductQuantity(int id) {
     return cartStore.getProductQuantity(id);
   }

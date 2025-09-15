@@ -41,10 +41,19 @@ class NewArrivalProductsSection extends StatelessWidget {
                         products.length,
                         (index) => Padding(
                           padding: const EdgeInsets.only(right: defaultPadding),
-                          child: ProductCard(
-                            product: products[index],
-                            cartStore: homeViewModel.cartStore,
-                          ),
+                          child: ListenableBuilder(
+                              listenable: homeViewModel.cartStore,
+                              builder: (context, child) {
+                                return ProductCard(
+                                  product: products[index],
+                                  cartQuantity: homeViewModel
+                                      .getProductQuantity(products[index].id),
+                                  onAddToCart: (product) =>
+                                      homeViewModel.addToCart(products[index]),
+                                  onRemoveFromCart: (product) => homeViewModel
+                                      .minusFromCart(products[index]),
+                                );
+                              }),
                         ),
                       ),
                     ),

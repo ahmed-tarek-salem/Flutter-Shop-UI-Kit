@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stylish/application/data/models/product_model.dart';
 import 'package:stylish/application/presentation/components/cart_actions.dart';
-import 'package:stylish/application/stores/cart_store.dart';
 import 'package:stylish/features/product/presentation/ui/product_screen.dart';
 
 import '../../../../../constants.dart';
@@ -10,11 +9,15 @@ class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
     required this.product,
-    required this.cartStore,
+    required this.cartQuantity,
+    required this.onAddToCart,
+    required this.onRemoveFromCart,
   });
 
   final ProductModel product;
-  final CartStore cartStore;
+  final int cartQuantity;
+  final Function(ProductModel product)? onAddToCart;
+  final Function(ProductModel product)? onRemoveFromCart;
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +67,11 @@ class ProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            ListenableBuilder(
-                listenable: cartStore,
-                builder: (context, child) {
-                  return CartActions(
-                    qunatity: cartStore.getProductQuantity(product.id),
-                    onRemove: () => cartStore.minusFromCart(product),
-                    onAdd: () => cartStore.addToCart(product),
-                  );
-                })
+            CartActions(
+              qunatity: cartQuantity,
+              onRemove: () => onRemoveFromCart?.call(product),
+              onAdd: () => onAddToCart?.call(product),
+            )
           ],
         ),
       ),
