@@ -41,19 +41,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         actions: [
-          Consumer(builder: (context, ref, child) {
-            final cartNotifier = ref.watch(cartProvider);
-
-            return IconButton(
-              icon: Badge(
-                  label: Text(cartNotifier.length.toString()),
-                  child: Icon(Icons.shopping_cart, color: Colors.grey)),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen()));
-              },
-            );
-          }),
+          ListenableBuilder(
+              listenable: homeViewModel.cartStore,
+              builder: (context, child) {
+                return IconButton(
+                  icon: Badge(
+                      label: Text(
+                          homeViewModel.cartStore.products.length.toString()),
+                      child: Icon(Icons.shopping_cart, color: Colors.grey)),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartScreen()));
+                  },
+                );
+              })
         ],
       ),
       body: RefreshIndicator(
