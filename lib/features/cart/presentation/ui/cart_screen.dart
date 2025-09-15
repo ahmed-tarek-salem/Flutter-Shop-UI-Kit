@@ -21,7 +21,9 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(
         title: Text("My cart"),
       ),
-      bottomNavigationBar: CartFooter(),
+      bottomNavigationBar: CartFooter(
+        cartViewModel: cartViewModel,
+      ),
       body: ListView.separated(
         separatorBuilder: (context, index) => const SizedBox(height: 8),
         padding: const EdgeInsets.all(defaultPadding),

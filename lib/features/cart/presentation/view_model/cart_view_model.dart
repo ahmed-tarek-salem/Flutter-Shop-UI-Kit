@@ -27,4 +27,8 @@ class CartViewModel {
   int getCartQuantity(int id) {
     return cartStore.getProductQuantity(id);
   }
+
+  /// Returns the total price of the cart
+  num get cartTotalPrice => cartStore.products.values
+      .fold(0, (prev, product) => prev + product.price * product.cartQuantity);
 }
