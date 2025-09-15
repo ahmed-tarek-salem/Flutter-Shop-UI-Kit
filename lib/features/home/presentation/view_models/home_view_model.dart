@@ -32,7 +32,6 @@ class HomeViewModel {
       final products = await _homeRepo.getProducts();
       final arrivals = products.take(10).toList();
       newArrivalProducts.value = Success(arrivals);
-      print(newArrivalProducts.value.toString());
     } catch (e) {
       newArrivalProducts.value = Error(e.toString());
     }

@@ -11,6 +11,8 @@ class CartStore extends ChangeNotifier {
 
   /// Adds a product or increases its quantity.
   void addToCart(ProductModel product) {
+    print(
+        "Add to cart {${product.title}} ${products[product.id]?.cartQuantity}");
     int currentQuantity = products[product.id]?.cartQuantity ?? 0;
     products[product.id] = product.copyWith(cartQuantity: currentQuantity + 1);
     notifyListeners();

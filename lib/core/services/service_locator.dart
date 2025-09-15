@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:stylish/application/stores/cart_store.dart';
 import 'package:stylish/features/cart/presentation/view_model/cart_view_model.dart';
+import 'package:stylish/features/category/data/data_sources/category_remote_data_srouce.dart';
+import 'package:stylish/features/category/data/repo/category_repo.dart';
+import 'package:stylish/features/category/presentation/view_model/category_view_model.dart';
 import 'package:stylish/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:stylish/features/home/data/repo/home_repo.dart';
 import 'package:stylish/features/home/presentation/view_models/home_view_model.dart';
@@ -18,9 +21,14 @@ void setupLocator() {
   getIt.registerLazySingleton<HomeRemoteDataSourceInterface>(
     () => HomeRemoteDataSource(networkService: getIt()),
   );
+  getIt.registerLazySingleton<CategoryDataSource>(
+    () => CategoryRemoteDataSource(networkService: getIt()),
+  );
   // Repositories
   getIt.registerLazySingleton<HomeRepoInterface>(
       () => HomeRepo(remoteDataSource: getIt()));
+  getIt.registerLazySingleton<CategoryRepo>(
+      () => CategoryRepoImpl(remoteDataSource: getIt()));
 
   // ViewModels (factory so every screen gets a new instance)
   getIt.registerFactory<HomeViewModel>(
@@ -29,4 +37,16 @@ void setupLocator() {
   );
   getIt.registerFactory<CartViewModel>(
       () => CartViewModel(cartStore: getIt<CartStore>()));
+
+  // getIt.registerFactory<CategoryViewModel>(
+  //   () => CategoryViewModel(categoryRepo: getIt<CategoryRepo>()),
+  // );
+
+  getIt.registerFactoryParam<CategoryViewModel, String, String?>(
+    (param1, param2) => CategoryViewModel(
+      categoryRepo: getIt<CategoryRepo>(),
+      cartStore: getIt<CartStore>(),
+      categoryTitle: param1,
+    ),
+  );
 }
