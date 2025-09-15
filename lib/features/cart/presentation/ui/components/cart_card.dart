@@ -50,7 +50,7 @@ class CartCard extends StatelessWidget {
               listenable: cartViewModel.cartStore,
               builder: (context, child) {
                 return CartActions(
-                  qunatity: cartViewModel.getCartQuantity(product.id),
+                  qunatity: cartViewModel.getProductQuantity(product.id),
                   onRemove: () => cartViewModel.minusFromCart(product),
                   onAdd: () => cartViewModel.addToCart(product),
                 );

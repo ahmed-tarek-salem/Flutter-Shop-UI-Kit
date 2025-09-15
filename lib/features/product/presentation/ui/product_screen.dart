@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stylish/application/data/models/product_model.dart';
+import 'package:stylish/application/presentation/components/cart_actions.dart';
 import 'package:stylish/constants.dart';
 import 'package:stylish/core/services/service_locator.dart';
 import 'package:stylish/core/state/async_state.dart';
@@ -118,19 +119,41 @@ class _ProductScreenState extends State<ProductScreen> {
                               ],
                             ),
                             const SizedBox(height: defaultPadding * 2),
-                            Center(
-                              child: SizedBox(
-                                width: 200,
-                                height: 48,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: primaryColor,
-                                      shape: const StadiumBorder()),
-                                  child: const Text("Add to Cart"),
-                                ),
-                              ),
-                            )
+                            ListenableBuilder(
+                                listenable: productViewModel.cartStore,
+                                builder: (context, chilld) {
+                                  if (productViewModel
+                                          .getProductQuantity(widget.id) >
+                                      0) {
+                                    return Container(
+                                      width: double.infinity,
+                                      child: Center(
+                                        child: CartActions(
+                                            qunatity: productViewModel
+                                                .getProductQuantity(widget.id),
+                                            onRemove: () => productViewModel
+                                                .minusFromCart(product),
+                                            onAdd: () => productViewModel
+                                                .addToCart(product)),
+                                      ),
+                                    );
+                                  }
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 200,
+                                      height: 48,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          productViewModel.addToCart(product);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: primaryColor,
+                                            shape: const StadiumBorder()),
+                                        child: const Text("Add to Cart"),
+                                      ),
+                                    ),
+                                  );
+                                })
                           ],
                         ),
                       ),

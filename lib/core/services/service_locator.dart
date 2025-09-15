@@ -58,6 +58,7 @@ void setupLocator() {
     (param1, param2) => ProductViewModel(
       id: param1,
       productRepo: getIt<ProductRepoInterface>(),
+      cartStore: getIt<CartStore>(),
     ),
   );
 }

@@ -24,7 +24,7 @@ class CartViewModel {
     cartStore.minusFromCart(product);
   }
 
-  int getCartQuantity(int id) {
+  int getProductQuantity(int id) {
     return cartStore.getProductQuantity(id);
   }
 
