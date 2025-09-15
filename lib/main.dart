@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stylish/constants.dart';
 import 'package:stylish/core/services/service_locator.dart';
 import 'package:stylish/features/home/presentation/ui/home_screen.dart';
 
 void main() {
   setupLocator();
-  runApp(ProviderScope(child: SafeArea(top: false, child: const MyApp())));
+  runApp(SafeArea(top: false, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

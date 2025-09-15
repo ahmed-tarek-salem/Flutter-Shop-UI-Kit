@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:stylish/core/constants/app_endpoints.dart';
 
-part 'network_service.g.dart';
+import 'package:stylish/core/constants/app_endpoints.dart';
 
 class NetworkService {
   late final Dio dio;
@@ -64,10 +61,4 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
   }
-}
-
-@riverpod
-NetworkService networkService(Ref ref) {
-  final NetworkService networkService = NetworkService();
-  return networkService;
 }

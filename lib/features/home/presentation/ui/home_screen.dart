@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stylish/constants.dart';
 import 'package:stylish/core/services/service_locator.dart';
-import 'package:stylish/features/cart/presentation/providers/cart_provider.dart';
 import 'package:stylish/features/cart/presentation/ui/cart_screen.dart';
 import 'package:stylish/features/home/presentation/view_models/home_view_model.dart';
 

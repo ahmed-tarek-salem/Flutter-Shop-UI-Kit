@@ -1,8 +1,5 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stylish/core/constants/app_endpoints.dart';
 import 'package:stylish/core/services/network_service.dart';
-
-part 'home_remote_data_source.g.dart';
 
 abstract class HomeRemoteDataSourceInterface {
   Future<List<dynamic>> getProducts();
@@ -31,15 +28,5 @@ class HomeRemoteDataSource implements HomeRemoteDataSourceInterface {
     } catch (e) {
       rethrow;
     }
-  }
-}
-
-@riverpod
-HomeRemoteDataSource homeRemoteDataSource(ref) {
-  try {
-    final networkService = ref.read(networkServiceProvider);
-    return HomeRemoteDataSource(networkService: networkService);
-  } catch (e) {
-    rethrow;
   }
 }

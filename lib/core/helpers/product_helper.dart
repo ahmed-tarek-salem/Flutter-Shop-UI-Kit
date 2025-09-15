@@ -1,7 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stylish/application/data/models/product_model.dart';
-
-part 'product_helper.g.dart';
 
 class ProductHelper {
   /// A helper method to update the quantity of a product in any state list
@@ -30,9 +27,4 @@ class ProductHelper {
       return [...products, cartProduct.copyWith(cartQuantity: quantity)];
     }
   }
-}
-
-@riverpod
-ProductHelper productHelper(ref) {
-  return ProductHelper();
 }
